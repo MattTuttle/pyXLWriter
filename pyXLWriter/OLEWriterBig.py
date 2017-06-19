@@ -201,7 +201,7 @@ class OLEWriterBig:
         fh.write("\x00\x00\x00\x00" * 4)
         fh.write(pack("<H", 0x3b))
         fh.write(pack("<H", 0x03))
-        fh.write(pack("<H", -2))
+        fh.write(pack("<h", -2))
         fh.write(pack("<H", 9))
         fh.write(pack("<H", 6))
         fh.write(pack("<H", 0))
@@ -215,7 +215,7 @@ class OLEWriterBig:
         
         # 2. Extra BDList Start, Count
         if all < fstbd_max:
-            fh.write(pack("<L", -2))        # Extra BDList Start
+            fh.write(pack("<l", -2))        # Extra BDList Start
             fh.write(pack("<L", 0))         # Extra BDList Count
         else:
             fh.write(pack("<L", all+bdcnt))
@@ -227,7 +227,7 @@ class OLEWriterBig:
             fh.write(pack("<L", all+i))
             i += 1
         if i < fstbdl:
-            fh.write((pack("<L", -1)) * (fstbdl-i)) 
+            fh.write((pack("<l", -1)) * (fstbdl-i))
 
     def _make_small_data(self):
         fh = self._fh
@@ -239,11 +239,11 @@ class OLEWriterBig:
             # 1.1 Add to SBD
             for i in xrange(smbcnt-1):
                 fh.write(pack("<L", i+1))
-            fh.write(pack("<L", -2))
+            fh.write(pack("<l", -2))
             smblk = smbcnt
             sbcnt = _BIG_BLOCK_SIZE // _LONG_INT_SIZE
             if smblk % sbcnt:
-                fh.write(pack("<L", -1) * (sbcnt - (smblk % sbcnt)))
+                fh.write(pack("<l", -1) * (sbcnt - (smblk % sbcnt)))
 
     def _save_smbg(self):
         fh = self._fh
@@ -308,17 +308,17 @@ class OLEWriterBig:
         if sbdsize > 0:
             for i in xrange(sbdsize-1):
                 fh.write(pack("<L", i+1))
-            fh.write(pack("<L", -2))
+            fh.write(pack("<l", -2))
             
         # 1.2 Set for B
         for i in xrange(bsize-1):
             fh.write(pack("<L", i + sbdsize + 1))
-        fh.write(pack("<L", -2))
+        fh.write(pack("<l", -2))
         
         # 1.3 Set for _PPS
         for i in xrange(ppscnt-1):
             fh.write(pack("<L", i + sbdsize + bsize + 1))
-        fh.write(pack("<L", -2))
+        fh.write(pack("<l", -2))
         
         # 1.4 Set for BBD itself ( 0xFFFFFFFD : BBD)
         for i in xrange(bdcnt):
@@ -330,7 +330,7 @@ class OLEWriterBig:
             
         # 1.6 Adjust for Block
         if (allw + bdcnt) % bbcnt:
-            fh.write(pack("<L", -1) * (bbcnt - ((allw + bdcnt) % bbcnt)))
+            fh.write(pack("<l", -1) * (bbcnt - ((allw + bdcnt) % bbcnt)))
             
         # 2.Extra BDList
         if bdcnt > fstbdl:
@@ -346,8 +346,8 @@ class OLEWriterBig:
                 i += 1
                 n += 1
             if (bdcnt-fstbdl) % (bbcnt-1):
-                fh.write(pack("<L", -1) * (bbcnt - 1 - ((bdcnt-fstbdl) % (bbcnt-1)))) 
-            fh.write(pack("<L", -2))
+                fh.write(pack("<l", -1) * (bbcnt - 1 - ((bdcnt-fstbdl) % (bbcnt-1))))
+            fh.write(pack("<l", -2))
 
     def close(self):
         self._write_footer()

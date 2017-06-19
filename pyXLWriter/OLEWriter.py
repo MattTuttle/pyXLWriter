@@ -132,15 +132,15 @@ class OLEWriter:
         id = pack("<8B", 0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1)
         unknown1 = pack("<LLLL", 0x00, 0x00, 0x00, 0x00)
         unknown2 = pack("<HH", 0x3E, 0x03)
-        unknown3 = pack("<H", -2)
+        unknown3 = pack("<h", -2)
         unknown4 = pack("<H", 0x09)
         unknown5 = pack("<LLL", 0x06, 0x00, 0x00)
         num_bbd_blocks = pack("<L", num_lists)
         root_startblock = pack("<L", root_start)
         unknown6 = pack("<LL", 0x00, 0x1000)
-        sbd_startblock = pack("<L", -2)
-        unknown7 = pack("<LLL", 0x00, -2 ,0x00)
-        unused = pack("<L", -1)
+        sbd_startblock = pack("<l", -2)
+        unknown7 = pack("<LlL", 0x00, -2 ,0x00)
+        unused = pack("<l", -1)
         fh.write(id)
         fh.write(unknown1)
         fh.write(unknown2)
@@ -165,9 +165,9 @@ class OLEWriter:
         num_lists = self._list_blocks
         total_blocks = num_lists * 128
         used_blocks = num_blocks + num_lists + 2
-        marker = pack("<L", -3)
-        end_of_chain = pack("<L", -2)
-        unused = pack("<L", -1)
+        marker = pack("<l", -3)
+        end_of_chain = pack("<l", -2)
+        unused = pack("<l", -1)
         for i in xrange(1, num_blocks):
             fh.write(pack("<L", i))
         fh.write(end_of_chain)
@@ -202,15 +202,15 @@ class OLEWriter:
         zero = pack("<B", 0)
         pps_sizeofname = pack("<H", length)    #0x40
         pps_type = pack("<H", type_)           #0x42
-        pps_prev = pack("<L", -1)              #0x44
-        pps_next = pack("<L", -1)              #0x48
-        pps_dir = pack("<L", dir)              #0x4c
+        pps_prev = pack("<l", -1)              #0x44
+        pps_next = pack("<l", -1)              #0x48
+        pps_dir = pack("<l", dir)              #0x4c
         unknown1 = pack("<L", 0)
         pps_ts1s = pack("<L", 0)               #0x64
         pps_ts1d = pack("<L", 0)               #0x68
         pps_ts2s = pack("<L", 0)               #0x6c
         pps_ts2d = pack("<L", 0)               #0x70
-        pps_sb = pack("<L", sb)                #0x74
+        pps_sb = pack("<l", sb)                #0x74
         pps_size = pack("<L", size)            #0x78
         fh.write(rawname)
         fh.write(zero * (64 - length))
