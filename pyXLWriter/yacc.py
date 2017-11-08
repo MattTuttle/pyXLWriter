@@ -60,7 +60,8 @@ default_lr  = 'SLR'            # Default LR table generation method
 
 error_count = 3                # Number of symbols that must be shifted to leave recovery mode
 
-import re, types, sys, cStringIO, md5, os.path
+import re, types, sys, cStringIO, os.path
+from hashlib import md5
 
 # Exception raised for yacc-related errors
 class YaccError(Exception):   pass
